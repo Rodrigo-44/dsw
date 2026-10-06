@@ -1,2 +1,27 @@
 <h1>Posts</h1>
-<p>Aquí se verán los post de Posts</p>
+<ul>
+    {% for post in posts %}
+
+
+        <li>{{ post }}</li>
+
+
+    {% endfor %}
+
+
+</ul>
+
+<ul>
+    {% for post in posts %}
+        <li style="background-color: {% cycle 'LightBlue' 'LightPink' %}">
+            {{ post }}
+        </li>
+    {% endfor %}
+</ul>
+<ul>
+  {% for post in posts %}
+    <li>
+        <a href="{% url 'posts:post-detail' post.slug%}">{{ post }}</a>
+    </li>
+    {% endfor %}
+</ul>
