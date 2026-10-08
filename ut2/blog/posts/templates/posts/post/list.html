@@ -1,27 +1,8 @@
-<h1>Posts</h1>
-<ul>
+{% extends "base.html" %}
+
+{% block content %}
     {% for post in posts %}
-
-
-        <li>{{ post }}</li>
-
-
+        <h3>{{ post }}</h3>
+        <p>Read more <a href="{% url 'posts:post-detail' post.slug %}">here</a></p>
     {% endfor %}
-
-
-</ul>
-
-<ul>
-    {% for post in posts %}
-        <li style="background-color: {% cycle 'LightBlue' 'LightPink' %}">
-            {{ post }}
-        </li>
-    {% endfor %}
-</ul>
-<ul>
-  {% for post in posts %}
-    <li>
-        <a href="{% url 'posts:post-detail' post.slug%}">{{ post }}</a>
-    </li>
-    {% endfor %}
-</ul>
+{% endblock %}
