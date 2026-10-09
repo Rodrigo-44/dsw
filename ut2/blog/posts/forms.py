@@ -1,6 +1,20 @@
 from django import forms
 
+from .models import Post
 
-class AddPostForm(forms.Form):
-    title = forms.CharField()
-    content = forms.CharField()
+
+class AddPostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('title', 'content')
+
+
+from django import forms
+
+from .models import Post
+
+
+class EditPostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('title', 'content')
