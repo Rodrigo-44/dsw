@@ -138,6 +138,14 @@ test *pytest_args="":
 # Lauch core tests
 [group('tests')]
 test-core *pytest_args="":
+    #!/usr/bin/env bash
+    migration_dirs=(tasks/migrations)
+    for dir in "${migration_dirs[@]}"; do
+        if ! ls "$dir" | grep -qE '^[0-9]{4}_.*\.py$'; then
+            printf '\033[31mDebes crear y aplicar MIGRACIONES antes de lanzar test-core!\033[0m\n'
+            exit 1
+        fi
+    done
     pypas test tests/test_core.py {{ pytest_args }}
 
 # Get pypas score

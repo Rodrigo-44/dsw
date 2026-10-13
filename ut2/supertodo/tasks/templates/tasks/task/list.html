@@ -1,0 +1,10 @@
+{% for task in tasks  %}
+    <h3>
+      <a href="{% url 'tasks:task-detail' task.slug %}"> {{ task }}</a>
+      {% if task.completed %}
+        : ✅
+      {% else %}
+        : ❌
+      {% endif %} 
+    </h3>
+{% endfor %}

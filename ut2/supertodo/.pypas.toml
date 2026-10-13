@@ -1,4 +1,4 @@
-version = "0.1.7"
+version = "0.1.10"
 slug = "supertodo"
 bundle = [ "/docs/README.pdf", "/tests", "/fixtures", "/factories", "/.gitignore", "/pyproject.toml", "/uv.lock", "/justfile", "/pytest.ini",]
 backup_on_update = [ "justfile",]
@@ -15,3 +15,6 @@ test_cmd = "uv run pytest"
 "0.1.5" = "Añade receta para obtener el score de los tests"
 "0.1.6" = "Ignora args.py al comprimir ejercicio"
 "0.1.7" = "Refactoriza recetas justfile para tests"
+"0.1.8" = "Añade comprobación de migraciones antes de test-core"
+"0.1.9" = "Corrige enlaces aprendepython.es"
+"0.1.10" = "Aclara el criterio de ordenación de tareas"
