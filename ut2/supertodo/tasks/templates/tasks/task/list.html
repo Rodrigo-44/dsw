@@ -1,10 +1,12 @@
-{% for task in tasks  %}
-    <h3>
-      <a href="{% url 'tasks:task-detail' task.slug %}"> {{ task }}</a>
-      {% if task.completed %}
-        : ✅
-      {% else %}
-        : ❌
-      {% endif %} 
-    </h3>
-{% endfor %}
+{% extends "base.html" %} {% block content %}
+<p>Número de tareas: {{ total_tasks }}</p>
+{% for task in tasks %}
+<h3>
+  <a href="{% url 'tasks:task-detail' task.slug %}"> {{ task }}</a>
+  {% if task.completed %} : ✅ {% else %} : ❌ {% endif %}
+</h3>
+
+{% empty %}
+<p>No hay tareas disponibles.</p>
+
+{% endfor %} {% endblock %}
