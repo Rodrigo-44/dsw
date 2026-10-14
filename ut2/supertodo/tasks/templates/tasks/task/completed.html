@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block content %}
+<p>Número de tareas: {{ total_tasks }}</p>
+{% for task in completed_list %}
+<h3>
+  <a href="{% url 'tasks:task-detail' task.slug %}"> {{ task }}: ✅</a>
+</h3>
+
+{% empty %}
+<p>No hay tareas disponibles.</p>
+
+{% endfor %} {% endblock %}

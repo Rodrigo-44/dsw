@@ -1,4 +1,7 @@
 <div class="header">
   <h1>SuperTODO</h1>
   <h2>{{ subtitle }}</h2>
+  <a href="{% url 'tasks:task-pending'%}">Pending Tasks </a>
+  <a href="{% url 'tasks:task-completed'%}">Completed Tasks </a>
+  <a href="{% url 'tasks:add-task'%}">Add Tasks </a>
 </div>

@@ -1,4 +1,4 @@
-version = "0.1.10"
+version = "0.1.12"
 slug = "supertodo"
 bundle = [ "/docs/README.pdf", "/tests", "/fixtures", "/factories", "/.gitignore", "/pyproject.toml", "/uv.lock", "/justfile", "/pytest.ini",]
 backup_on_update = [ "justfile",]
@@ -18,3 +18,5 @@ test_cmd = "uv run pytest"
 "0.1.8" = "Añade comprobación de migraciones antes de test-core"
 "0.1.9" = "Corrige enlaces aprendepython.es"
 "0.1.10" = "Aclara el criterio de ordenación de tareas"
+"0.1.11" = "Explica cómo mostrar mensaje de tarea no encontrada"
+"0.1.12" = "Corrige error tipográfico en mensaje de error"
