@@ -1,9 +1,16 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+{% block content %}
+
 <p>Número de tareas: {{ total_tasks }}</p>
+
 {% for task in tasks %}
 <h3>
   <a href="{% url 'tasks:task-detail' task.slug %}"> {{ task }}</a>
-  {% if task.completed %} : ✅ {% else %} : ❌ {% endif %}
+  {% if task.completed %}
+  : <a href="{% url 'tasks:toggle-task' task.slug %}">✅</a>
+{% else %}
+  : <a href="{% url 'tasks:toggle-task' task.slug %}">❌</a>
+{% endif %}
   <a href="{% url 'tasks:delete-task' task.slug %}"> Delete</a>
   <a href="{% url 'tasks:edit-task' task.slug %}"> Edit</a>
 </h3>
@@ -12,6 +19,5 @@
 <p>Nada que hacer. ¡Enhorabuena!</p>
 
 {% endfor %} 
-
 
 {% endblock %}

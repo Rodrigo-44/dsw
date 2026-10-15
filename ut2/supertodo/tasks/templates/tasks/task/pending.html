@@ -8,4 +8,6 @@
 {% empty %}
 <p>Nada que hacer. ¡Enhorabuena!</p>
 
-{% endfor %} {% endblock %}
+{% endfor %}
+<a href="{% url 'tasks:task-list' %}"> Volver</a>
+{% endblock %}

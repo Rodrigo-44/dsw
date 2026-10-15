@@ -73,5 +73,8 @@ def edit_task(request, task_slug: str):
     return render(request, 'tasks/task/edit.html', {'task': task, 'form': form})
 
 
-def toggle_task():
-    pass
+def toggle_task(request, task_slug=str):
+    task = Task.objects.get(slug=task_slug)
+    task.completed = not task.completed
+    task.save()
+    return redirect('tasks:task-list')
