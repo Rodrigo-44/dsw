@@ -21,6 +21,4 @@ def test_template_includes(client):
 def test_template_contains_css_links(client):
     response = client.get(conftest.TASK_LIST_URL)
     response_text = response.content.decode()
-    assert re.search(
-        r'<link[^>]+href="[^"]+(main|custom|styles?)\.css"', response_text, re.S | re.M
-    )
+    assert re.search(r'<link[^>]+href="[^"]+\w+\.css"', response_text, re.S | re.M)

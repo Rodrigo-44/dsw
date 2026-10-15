@@ -1,0 +1,9 @@
+<h2>{{ task.name.upper }}</h2>
+<p>{% if task.completed %}
+  <b>Completada</b>
+  {% else %}
+  <b>Pendiente</b>
+  {% endif %}</p>
+<p>{{ task.description }}</p>
+
+<a href="{% url 'tasks:task-list' %}"> Volver</a>

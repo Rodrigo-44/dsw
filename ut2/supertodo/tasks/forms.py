@@ -6,15 +6,10 @@ from .models import Task
 class AddTaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ('title', 'content')
-
-
-from django import forms
-
-from .models import Task
+        fields = ('name', 'description')
 
 
 class EditTaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ('title', 'content')
+        fields = ('name', 'description')

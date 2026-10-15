@@ -1,5 +1,8 @@
 # Create your views here.
-from django.shortcuts import render
+
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+from django.utils.text import slugify
 
 from .forms import AddTaskForm, EditTaskForm
 from .models import Task
@@ -32,40 +35,41 @@ def task_list_completed(request):
 
 
 def add_task(request):
-    if request.method == 'TASK':
+    if request.method == 'POST':
         if (form := AddTaskForm(request.TASK)).is_valid():
             task = form.save(commit=False)
-
-            task.slug = slugify(post.title)
-
+            task.slug = slugify(task.name)
             task.save()
-
             return redirect('tasks:task-detail')
-
     else:
         form = AddTaskForm()
-
     return render(request, 'tasks/task/add.html', {'form': form})
 
 
-def task_detail():
-    pass
+def task_detail(request, task_slug: str):
+    try:
+        task = Task.objects.get(slug=task_slug)
+    except Task.DoesNotExist:
+        return HttpResponse(f'La tarea con slug {task_slug} no existe.')
+    return render(request, 'tasks/task/detail.html', {'task': task})
 
 
-def delete_task():
-    pass
+def delete_task(request, task_slug: str):
+    task = Task.objects.filter(slug__contains=task_slug)
+    task.delete()
+    return render(request, 'tasks/task/delete.html', {'task': task})
 
 
-def edit_task():
-    task = Task.objects.get(slug=post_slug)
-    if request.method == 'TASK':
-        if (form := EditTaskForm(request.POST, instance=post)).is_valid():
-            post = form.save(commit=False)
-            post.slug = slugify(post.title)
-            post.save()
-            return redirect('posts:post-list')
+def edit_task(request, task_slug: str):
+    task = Task.objects.get(slug=task_slug)
+    if request.method == 'POST':
+        if (form := EditTaskForm(request.POST, instance=task)).is_valid():
+            task = form.save(commit=False)
+            task.slug = slugify(task.name)
+            task.save()
+            return redirect('tasks:task-list')
     else:
-        form = EditTaskForm(instance=post)
+        form = EditTaskForm(instance=task)
     return render(request, 'tasks/task/edit.html', {'task': task, 'form': form})
 
 

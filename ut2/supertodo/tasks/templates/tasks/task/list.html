@@ -4,9 +4,14 @@
 <h3>
   <a href="{% url 'tasks:task-detail' task.slug %}"> {{ task }}</a>
   {% if task.completed %} : ✅ {% else %} : ❌ {% endif %}
+  <a href="{% url 'tasks:delete-task' task.slug %}"> Delete</a>
+  <a href="{% url 'tasks:edit-task' task.slug %}"> Edit</a>
 </h3>
 
 {% empty %}
-<p>No hay tareas disponibles.</p>
+<p>Nada que hacer. ¡Enhorabuena!</p>
 
-{% endfor %} {% endblock %}
+{% endfor %} 
+
+
+{% endblock %}
