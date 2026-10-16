@@ -11,26 +11,34 @@ from .models import Task
 def task_list(request):
     tasks = Task.objects.order_by('-created_at')
     total_tasks = tasks.count()
-    return render(request, 'tasks/task/list.html', {'tasks': tasks, 'total_tasks': total_tasks})
+    return render(
+        request,
+        'tasks/task/list.html',
+        {'tasks': tasks, 'total_tasks': total_tasks, 'subtitle': 'Todas las tareas'},
+    )
 
 
 def task_list_pending(request):
-    pending_list = Task.objects.filter(completed__lt=1)
+    pending_list = Task.objects.filter(completed__lt=1).order_by('-created_at')
     total_tasks = pending_list.count()
     return render(
         request,
         'tasks/task/pending.html',
-        {'pending_list': pending_list, 'total_tasks': total_tasks},
+        {'pending_list': pending_list, 'total_tasks': total_tasks, 'subtitle': 'Tareas pendientes'},
     )
 
 
 def task_list_completed(request):
-    completed_list = Task.objects.filter(completed__gt=0)
+    completed_list = Task.objects.filter(completed__gt=0).order_by('-created_at')
     total_tasks = completed_list.count()
     return render(
         request,
         'tasks/task/completed.html',
-        {'completed_list': completed_list, 'total_tasks': total_tasks},
+        {
+            'completed_list': completed_list,
+            'total_tasks': total_tasks,
+            'subtitle': 'Tareas completadas',
+        },
     )
 
 
@@ -40,7 +48,7 @@ def add_task(request):
             task = form.save(commit=False)
             task.slug = slugify(task.name)
             task.save()
-            return redirect('tasks:task-detail')
+            return redirect('tasks:task-detail', task_slug=task.slug)
     else:
         form = AddTaskForm()
     return render(request, 'tasks/task/add.html', {'form': form})
