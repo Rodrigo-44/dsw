@@ -36,7 +36,7 @@ def task_list_completed(request):
 
 def add_task(request):
     if request.method == 'POST':
-        if (form := AddTaskForm(request.TASK)).is_valid():
+        if (form := AddTaskForm(request.POST)).is_valid():
             task = form.save(commit=False)
             task.slug = slugify(task.name)
             task.save()
@@ -50,14 +50,14 @@ def task_detail(request, task_slug: str):
     try:
         task = Task.objects.get(slug=task_slug)
     except Task.DoesNotExist:
-        return HttpResponse(f'La tarea con slug {task_slug} no existe.')
+        return HttpResponse(f'La tarea con slug "{task_slug}" no existe.')
     return render(request, 'tasks/task/detail.html', {'task': task})
 
 
 def delete_task(request, task_slug: str):
     task = Task.objects.filter(slug__contains=task_slug)
     task.delete()
-    return render(request, 'tasks/task/delete.html', {'task': task})
+    return redirect('tasks:task-list')
 
 
 def edit_task(request, task_slug: str):
@@ -67,10 +67,12 @@ def edit_task(request, task_slug: str):
             task = form.save(commit=False)
             task.slug = slugify(task.name)
             task.save()
-            return redirect('tasks:task-list')
+            return redirect('tasks:task-list', task_slug=task.slug)
     else:
         form = EditTaskForm(instance=task)
-    return render(request, 'tasks/task/edit.html', {'task': task, 'form': form})
+    return render(
+        request, 'tasks/task/edit.html', {'task': task, 'form': form, 'title': 'SuperTODO'}
+    )
 
 
 def toggle_task(request, task_slug=str):
