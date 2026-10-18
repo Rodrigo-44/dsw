@@ -1,8 +1,10 @@
-<h1>Editando post "{{ task.name }}"</h1>
+{% extends "base.html" %}
 
+{% block content %}
 <form method="post" novalidate>
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Guardar">
+    {{ form.as_p }}
+    <button type="submit">Guardar cambios</button>
+    <a href="{% url 'tasks:task-list' %}">Cancelar</a>
 </form>
-<a href="{% url 'tasks:task-list' %}"> Volver</a>
+{% endblock %}

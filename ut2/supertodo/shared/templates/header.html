@@ -1,7 +1,12 @@
-<div class="header">
-  <h1>SuperTODO</h1>
-  <h2>{{ subtitle }}</h2>
-  <a href="{% url 'tasks:task-pending'%}">Pending Tasks </a>
-  <a href="{% url 'tasks:task-completed'%}">Completed Tasks </a>
-  <a href="{% url 'tasks:add-task'%}">Add Tasks </a>
-</div>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="{% url 'tasks:task-list' %}">SuperTODO</a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="{% url 'tasks:task-list' %}">Todas</a>
+      <a href="{% url 'tasks:task-pending' %}">Pendientes</a>
+      <a href="{% url 'tasks:task-completed' %}">Completadas</a>
+      <a class="add-link" href="{% url 'tasks:add-task' %}">Añadir tarea</a>
+    </nav>
+  </div>
+  {% if subtitle %}<h1 class="page-title">{{ subtitle }}</h1>{% endif %}
+</header>

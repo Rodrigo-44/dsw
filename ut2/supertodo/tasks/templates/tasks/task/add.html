@@ -1,7 +1,10 @@
-<h1>Add post</h1>
+{% extends "base.html" %}
 
-<form method="POST" novalidate>
-  {% csrf_token %} {{ form }}
-  <input type="submit" value="Enviar" />
+{% block content %}
+<form method="post" novalidate>
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Añadir tarea</button>
+  <a href="{% url 'tasks:task-list' %}">Cancelar</a>
 </form>
-<a href="{% url 'tasks:task-list' %}"> Volver</a>
+{% endblock %}

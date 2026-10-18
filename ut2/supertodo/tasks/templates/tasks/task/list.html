@@ -1,23 +1,24 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
+
 {% block content %}
+<p class="task-count">Número de tareas: {{ total_tasks }}</p>
 
-<p>Número de tareas: {{ total_tasks }}</p>
-
-{% for task in tasks %}
-<h3>
-  <a href="{% url 'tasks:task-detail' task.slug %}"> {{ task }}</a>
-  {% if task.completed %}
-  : <a href="{% url 'tasks:toggle-task' task.slug %}">✅</a>
-{% else %}
-  : <a href="{% url 'tasks:toggle-task' task.slug %}">❌</a>
-{% endif %}
-  <a href="{% url 'tasks:delete-task' task.slug %}"> Delete</a>
-  <a href="{% url 'tasks:edit-task' task.slug %}"> Edit</a>
-</h3>
-
-{% empty %}
-<p>Nada que hacer. ¡Enhorabuena!</p>
-
-{% endfor %} 
-
+<ul class="task-list">
+  {% for task in tasks %}
+  <li class="task-item">
+    <span class="task-status" aria-label="{% if task.completed %}Completada{% else %}Pendiente{% endif %}">
+      {% if task.completed %}✅{% else %}❌{% endif %}
+    </span>
+    <a class="task-name" href="{% url 'tasks:task-detail' task_slug=task.slug %}">{{ task.name }}</a>
+    <nav class="task-actions" aria-label="Acciones para {{ task.name }}">
+      <a href="{% url 'tasks:toggle-task' task_slug=task.slug %}">{% if task.completed %}Marcar como pendiente{% else
+        %}Marcar como completada{% endif %}</a>
+      <a href="{% url 'tasks:edit-task' task_slug=task.slug %}">Editar</a>
+      <a href="{% url 'tasks:delete-task' task_slug=task.slug %}">Borrar</a>
+    </nav>
+  </li>
+  {% empty %}
+  <li class="empty-state">Nada que hacer. ¡Enhorabuena!</li>
+  {% endfor %}
+</ul>
 {% endblock %}

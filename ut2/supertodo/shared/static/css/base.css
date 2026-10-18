@@ -1,0 +1,174 @@
+:root {
+  color-scheme: light;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  color: #202c2a;
+  background: #f2f5f0;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f2f5f0 0%, #e4efeb 100%);
+}
+
+a {
+  color: #176b60;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: #a34a32;
+}
+
+.site-header {
+  padding: 1.25rem max(1.25rem, calc((100% - 900px) / 2));
+  background: #183d38;
+  color: #fff;
+}
+
+.header-inner,
+.main-nav,
+.task-item {
+  display: flex;
+  align-items: center;
+}
+
+.header-inner {
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.brand {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.main-nav {
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.main-nav a {
+  color: #e8f2ed;
+}
+
+.main-nav .add-link {
+  padding: 0.55rem 0.8rem;
+  background: #efad67;
+  color: #252a27;
+  text-decoration: none;
+}
+
+.page-title {
+  margin: 2rem 0 0;
+  font-size: 1.8rem;
+}
+
+.container {
+  width: min(900px, calc(100% - 2.5rem));
+  margin: 2rem auto;
+}
+
+.task-count {
+  color: #53645e;
+}
+
+.task-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #c8d3cd;
+}
+
+.task-item {
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+  border-bottom: 1px solid #c8d3cd;
+}
+
+.task-name {
+  color: #202c2a;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.task-actions {
+  display: flex;
+  gap: 0.9rem;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.task-status {
+  width: 1.5rem;
+  text-align: center;
+}
+
+.empty-state {
+  padding: 1.5rem 0;
+  color: #53645e;
+}
+
+form p {
+  display: grid;
+  gap: 0.35rem;
+  max-width: 600px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 0.65rem;
+  border: 1px solid #9dada6;
+  border-radius: 3px;
+  font: inherit;
+}
+
+textarea {
+  min-height: 9rem;
+}
+
+button {
+  padding: 0.65rem 0.9rem;
+  border: 0;
+  border-radius: 3px;
+  background: #176b60;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+form > a {
+  margin-left: 0.8rem;
+}
+
+.task-detail {
+  max-width: 700px;
+  padding-bottom: 1rem;
+}
+
+.task-state {
+  color: #176b60;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    padding: 1rem 1.25rem;
+  }
+
+  .task-actions {
+    width: 100%;
+    margin-left: 2.3rem;
+  }
+}
