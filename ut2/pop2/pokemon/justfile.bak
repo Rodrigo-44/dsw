@@ -1,0 +1,150 @@
+# Run development server
+dev:
+    uv run manage.py runserver
+
+alias c:=check
+# Check Django project
+check:
+    uv run manage.py check
+
+# Setup project
+setup: && migrate create-su set-tz set-media
+    #!/usr/bin/env bash
+    uv sync
+    uv run django-admin startproject main .
+
+alias mm:=makemigrations
+# Make model migrations
+makemigrations app="":
+    uv run manage.py makemigrations {{app}}
+
+alias m:=migrate
+# Apply model migrations
+migrate app="":
+    uv run manage.py migrate {{app}}
+
+# Set Django TimeZone
+set-tz timezone="Atlantic/Canary":
+    #!/usr/bin/env bash
+    sed -i -E "s@(TIME_ZONE).*@\1 = '{{ timezone }}'@" ./main/settings.py
+    if [ $? -eq 0 ]; then
+        echo "✔ Fixed TIME_ZONE='{{ timezone }}' and LANGUAGE_CODE='es-es'"
+    fi
+
+# Set media settings
+[group('config')]
+set-media:
+    #!/usr/bin/env bash
+    echo "" >> ./main/settings.py
+    echo "MEDIA_ROOT = BASE_DIR / 'media'" >> ./main/settings.py
+    echo "MEDIA_URL = 'media/'" >> ./main/settings.py
+    echo "✔ Media settings added to settings.py"
+
+# Create a superuser (or update it if already exists)
+create-su username="admin" password="admin" email="admin@example.com":
+    #!/usr/bin/env bash
+    uv run manage.py shell -c '
+    from django.contrib.auth.models import User
+    user, _ = User.objects.get_or_create(username="{{ username }}")
+    user.email = "{{ email }}"
+    user.set_password("{{ password }}") 
+    user.is_superuser = True
+    user.is_staff = True
+    user.save()
+    ' 
+    echo "✔ Created superuser → {{ username }}:{{ password }}"
+
+# Add a new app and install it on settings.py
+startapp app:
+    #!/usr/bin/env bash
+    uv run manage.py startapp {{ app }}
+    APP_CLASS={{ app }}
+    APP_CONFIG="{{ app }}.apps.${APP_CLASS^}Config"
+    perl -0pi -e "s/(INSTALLED_APPS *= *\[)(.*?)(\])/\1\2    '$APP_CONFIG',\n\3/smg" ./main/settings.py
+    echo "✔ App '{{ app }}' created & added to settings.INSTALLED_APPS"
+
+# Remove migrations and database. Reset DB artefacts.
+[confirm("⚠️ All migrations and database will be removed. Continue? [yN]:")]
+reset-db: && create-su
+    #!/usr/bin/env bash
+    find . -path "*/migrations/*.py" ! -path "./.venv/*" ! -name "__init__.py" -delete
+    find . -path "*/migrations/*.pyc" ! -path "./.venv/*" -delete
+    rm -f db.sqlite3
+    ./manage.py makemigrations
+    ./manage.py migrate
+    echo
+
+# Remove virtualenv
+[confirm("⚠️ Virtualenv './venv' will be removed. Continue? [yN]:")]
+rm-venv:
+    rm -fr .venv
+
+# Kill existent manage.py processes
+kill:
+    pkill -f "[Pp]ython.*manage.py runserver" || echo "No process"
+
+# Launch tests
+[group('tests')]
+test *pytest_args="":
+    pypas test {{ pytest_args }}
+
+# Lauch core tests
+[group('tests')]
+test-core *pytest_args="":
+    #!/usr/bin/env bash
+    migration_dirs=(creatures/migrations)
+    for dir in "${migration_dirs[@]}"; do
+        if ! ls "$dir" | grep -qE '^[0-9]{4}_.*\.py$'; then
+            printf '\033[31mDebes crear y aplicar MIGRACIONES antes de lanzar test-core!\033[0m\n'
+            exit 1
+        fi
+    done
+    pypas test tests/test_core.py {{ pytest_args }}
+
+# Get pypas score
+[group('tests')]
+@score:
+    pypas test | grep "RESULTADO FINAL" -A4
+
+alias sh:=shell
+# Open project (django) shell
+shell:
+    uv run manage.py shell
+
+alias dbsh:=dbshell
+# Open database shell
+dbshell:
+    uv run manage.py dbshell
+
+# Clean data
+[private]
+[group('data')]
+clean-data:
+    #!/usr/bin/env bash
+    uv run manage.py shell -v0 -c '
+    Creature.objects.all().delete()
+    ' 
+    sqlite3 db.sqlite3 '
+    delete from sqlite_sequence where name='\''creatures_creature'\''
+    '
+
+# Load fixtures into database
+[group('data')]
+@load-data: clean-data
+    uv run manage.py loaddata fixtures/creatures.json
+
+# Generate fake data and populate database
+[group('data')]
+[private]
+gen-data: clean-data
+    #!/usr/bin/env bash
+    uv run manage.py gen_data
+    echo "✔ Fake data generated and loaded into database."
+
+# Dump database data into fixtures
+[group('data')]
+[private]
+dump-data:
+    #!/usr/bin/env bash
+    uv run manage.py dumpdata creatures > fixtures/creatures.json
+    echo "✔ Data dumped into fixtures/*.json"

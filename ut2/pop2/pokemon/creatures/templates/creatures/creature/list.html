@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+  {% block content %}
+    {% for creature in creatures %}
+    <p>{{creature.name}} <a href="{% url 'creature:creature-detail' creature.slug %}">here</a></p>
+    {% empty %}
+    <p>No creatures yet on database.</p>
+  {% endfor %}
+<h3>Total creatures: {{total_creatures}}</h3>
+{% endblock %}
+

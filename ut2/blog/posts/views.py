@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.utils.text import slugify
 
@@ -50,3 +51,13 @@ def edit_post(request, post_slug: str):
     else:
         form = EditPostForm(instance=post)
     return render(request, 'posts/post/edit.html', {'post': post, 'form': form})
+
+
+def change_post_status(request, post_slug: str, post_private: bool):
+
+    try:
+        post = Post.objects.get(slug=post_slug)
+        post.private = post_private
+        post.save()
+    except Post.DoesNotExist:
+        return HttpResponse('Post does not exist')

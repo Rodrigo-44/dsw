@@ -1,0 +1,12 @@
+{% extends "base.html" %} 
+ {% block content %}
+<h2>{{ creature.name }}</h2>
+<p>{{ creature.slug }}</p>
+<p>{{ creature.type1 }}</p>
+<p>{{ creature.attack }}</p>
+<p>{{ creature.defense }}</p>
+<p>{{ creature.speed }}</p>
+<p>{{ creature.generation }}</p>
+<a href="{% url 'creature:creature-list' %}">Back</a>
+<endblock>
+{% endblock %}
