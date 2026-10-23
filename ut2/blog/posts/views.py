@@ -1,9 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from .forms import AddPostForm
 from .models import Post
 
 
+@login_required
 def post_list(request):
     posts = Post.objects.all()
     author = f'{request.user.first_name} {request.user.last_name}'
