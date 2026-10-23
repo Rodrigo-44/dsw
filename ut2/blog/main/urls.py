@@ -20,8 +20,8 @@ from django.shortcuts import render
 from django.urls import include, path
 
 urlpatterns = [
+    path('', include('accounts.urls')),
     path('', lambda r: render(r, 'index.html'), name='index'),
-    path('', include('accounts.')),
     path('admin/', admin.site.urls),
     path('posts/', include('posts.urls')),
 ]
