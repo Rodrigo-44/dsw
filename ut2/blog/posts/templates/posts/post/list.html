@@ -1,8 +1,6 @@
-{% extends "base.html" %}
-
-{% block content %}
-    {% for post in posts %}
-        <h3>{{ post }}</h3>
-        <p>Read more <a href="{% url 'posts:post-detail' post.slug %}">here</a></p>
-    {% endfor %}
-{% endblock %}
+{% extends "base.html" %} {% block content %}
+<p>Created by {{ authhor }}</p>
+{% for post in posts %}
+<h3>{{ post }}</h3>
+<p>Read more <a href="{{ post.get_absolute_url  }}">here</a></p>
+{% endfor %} {% endblock %}
