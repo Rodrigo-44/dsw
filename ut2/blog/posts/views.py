@@ -1,7 +1,6 @@
+from blog.comments.forms import AddCommentForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-
-from blog.comments.forms import AddCommentForm
 
 from .forms import AddPostForm
 from .models import Post
@@ -22,8 +21,13 @@ def post_list(request):
     )
 
 
-def post_detail(request, post_slug: str):
-    post = Post.objects.get(slug=post_slug)
+@login_required
+def post_detail(request, post: Post):
+
+    comment_form = AddCommentForm()
+    context = {
+        'post': post,
+    }
     return render(request, 'posts/post/detail.html', {'post': post})
 
 
@@ -43,3 +47,8 @@ def add_comments(request, post_slug: str):
     if (form := AddCommentForm(request.POST)).is_valid():
         form.save(post, request.user)
     return redirect(post)
+
+
+def delete_post(request, post: Post):
+    post.delete()  # Pones esto pq el conversor que acabamos de crear ya lo buscamo y si no devuelve un error 404
+    return redirect('posts:post-list')

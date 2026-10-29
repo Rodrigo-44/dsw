@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-pbjz=ol2lffa%knci0^q(*)0o@3x6r$js$t9#gwu68x^=@k372
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -68,7 +68,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'string_if_invalid': 'Missing variable: %s',
+            #'string_if_invalid': 'Missing variable: %s',
         },
     },
 ]
