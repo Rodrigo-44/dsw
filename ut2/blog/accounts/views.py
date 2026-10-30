@@ -1,3 +1,5 @@
+from django contrib import messages
+from pyexpat.errors import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 
@@ -16,7 +18,8 @@ def user_login(request):
                 login(request, user)
                 return redirect(request.GET.get('next', FALLBACK_REDIRECT))
             else:
-                form.add_error(None, 'Incorrect username or password.')
+                #form.add_error(None, 'Incorrect username or password.')
+                messages.error(request, '')
     else:
         form = LoginForm()
     return render(request, 'accounts/login.html', {'form': form})

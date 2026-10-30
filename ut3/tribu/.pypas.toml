@@ -1,0 +1,19 @@
+version = "0.1.9"
+slug = "tribu"
+bundle = [ "/docs/README.pdf", "/tests", "/fixtures", "/factories", "/media/avatars/example*.jpg", "/media/avatars/noavatar.png", "/.gitignore", "/pyproject.toml", "/uv.lock", "/justfile", "/pytest.ini",]
+backup_on_update = [ "justfile",]
+delete_on_update = [ "pytest.ini",]
+exclude_from_zip = [ "*.pyc", ".DS_Store", "/.git", "*.bak", ".venv", ".env", "*cache*", "/args.py",]
+test_cmd = "uv run pytest"
+
+[release_notes]
+"0.1.0" = "Primera versión"
+"0.1.1" = "Ignora carpetas cache al crear el zip"
+"0.1.2" = "Integra pytest.ini en pyproject.toml"
+"0.1.3" = "Corrige errores menores en justfile y README"
+"0.1.4" = "Añade score a los tests"
+"0.1.5" = "Añade receta para obtener el score de los tests"
+"0.1.6" = "Ignora args.py al comprimir ejercicio"
+"0.1.7" = "Refactoriza recetas justfile para tests"
+"0.1.8" = "Añade comprobación de migraciones antes de test-core"
+"0.1.9" = "Corrige enlaces aprendepython.es"

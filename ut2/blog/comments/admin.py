@@ -7,3 +7,4 @@ from .models import Comment
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('content', 'post', 'user')
+    autocomplete_fields = ('post',)

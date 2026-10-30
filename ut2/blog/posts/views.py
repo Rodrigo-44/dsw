@@ -1,6 +1,10 @@
 from blog.comments.forms import AddCommentForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from django.contrib import messages
+
+
+from django.shortcuts import render
 
 from .forms import AddPostForm
 from .models import Post
@@ -35,6 +39,7 @@ def add_post(request):
     if request.method == 'POST':
         if (form := AddPostForm(request.POST, request.FILES)).is_valid():
             post = form.save()
+            messages.success(request, 'Enhorabuena tienes un nuevo post')
             return redirect(post)
             # return redirect('posts:post-list')
     else:
@@ -42,12 +47,13 @@ def add_post(request):
     return render(request, 'posts/post/add.html', {'form': form, 'subtitle': 'Add Post'})
 
 
-def add_comments(request, post_slug: str):
-    post = Post.objects.get(slug=post_slug)
+def add_comments(request, post: Post):
     if (form := AddCommentForm(request.POST)).is_valid():
         form.save(post, request.user)
     return redirect(post)
 
+def edit_post(request, post:Post):
+    if request._
 
 def delete_post(request, post: Post):
     post.delete()  # Pones esto pq el conversor que acabamos de crear ya lo buscamo y si no devuelve un error 404
