@@ -138,14 +138,6 @@ test *pytest_args="":
 # Lauch core tests
 [group('tests')]
 test-core *pytest_args="":
-    #!/usr/bin/env bash
-    migration_dirs=(echos/migrations waves/migrations users/migrations)
-    for dir in "${migration_dirs[@]}"; do
-        if ! ls "$dir" | grep -qE '^[0-9]{4}_.*\.py$'; then
-            printf '\033[31mDebes crear y aplicar MIGRACIONES antes de lanzar test-core!\033[0m\n'
-            exit 1
-        fi
-    done
     pypas test tests/test_core.py {{ pytest_args }}
 
 # Get pypas score
@@ -180,7 +172,15 @@ show-users password="1234":
 
 # Load fixtures into database
 [group('data')]
-@load-data: clean-data && show-users
+load-data: clean-data && show-users
+    #!/usr/bin/env bash
+    migration_dirs=(echos/migrations waves/migrations users/migrations)
+    for dir in "${migration_dirs[@]}"; do
+        if ! ls "$dir" | grep -qE '^[0-9]{4}_.*\.py$'; then
+            printf '\033[31mDebes crear y aplicar MIGRACIONES antes de lanzar load-data!\033[0m\n'
+            exit 1
+        fi
+    done
     uv run manage.py loaddata fixtures/auth.json fixtures/users.json fixtures/echos.json fixtures/waves.json
 
 # Generate fake data and populate database
