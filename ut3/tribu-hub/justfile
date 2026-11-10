@@ -1,0 +1,19 @@
+# Serve the site with autoreload
+serve: clean
+    uv run pelican --autoreload --listen --ignore-cache --debug
+
+# Quickstart a new Pelican site
+start:
+    uv run pelican-quickstart
+
+# Build the site
+build: clean
+    uv run pelican content -d
+
+# Open the generated site in the default web browser
+index:
+    open output/index.html
+
+# Clean folder with generated content
+clean:
+    rm -fr output

@@ -41,7 +41,7 @@ def echo_waves(request, echo: Echo):
 def edit_echo(request, echo: Echo):
     if request.method == 'ECHO':
         if (form := EditEchoForm(request.ECHO, instance=echo)).is_valid():
-            echo.save()
+            form.save()
             messages.success(request, 'Echo updated successfully')
             return redirect(echo)
         else:
