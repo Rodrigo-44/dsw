@@ -1,0 +1,9 @@
+<form method="post" novalidate>
+  {% csrf_token %} {{ form }}
+  <input type="submit" value="Login" />
+</form>
+
+<h4>Don't you have an account yet?</h4>
+<button>
+  <a href=" {% url "accounts:signup" %}">Sign up</a>
+</button>

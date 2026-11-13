@@ -1,0 +1,5 @@
+{% extends "base.html" %} {% block content %}
+<h3>{% include "accounts.html" %}</h3>
+<a href="{% url 'echos:echo-list' %}">Ver echos</a>
+<a href="{% url 'users:user-list' %}">Ver perfiles</a>
+{% endblock content %}

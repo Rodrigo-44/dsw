@@ -1,0 +1,38 @@
+{% extends "base.html" %} {% block content %}
+<!-- prettier-ignore -->
+{% if echo %}
+<h3>Tribu has posted {{ total_echos }} echo{{ echo|length|pluralize }} so far!</h3>
+<button>
+    <a href="{% url 'echos:echo-add' %}">Add echo</a>
+</button>
+<ol>
+    {% for echo in echo %}
+
+    <li>
+        <p>{{ echo.content|truncatewords:20 }}</p>
+
+        <ul>
+            <li>
+                <p>
+                    Writed by:
+                    <a href="{% url 'users:user-detail' echo.user %}">
+                        <b>{{ echo.user.username|capfirst }}</b>
+                    </a>
+                </p>
+            </li>
+            <li><a href="{% url 'echos:echo-detail' echo %}">Ver echo</a></li>
+            <br />
+            <li><time>{{ echo.created_at|timesince }} ago</time><br /></li>
+            <separator>________________</separator
+            ><br />
+        </ul>
+        {% endfor %}
+    </li>
+</ol>
+
+{% else %}
+<p>No echos yet.</p>
+<button>
+    <a href="{% url 'echos:echo-add' %}">Add echo</a>
+</button>
+{% endif %} {% endblock content %}

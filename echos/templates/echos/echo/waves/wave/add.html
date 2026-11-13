@@ -1,0 +1,8 @@
+<form method="post" novalidate>
+    {% csrf_token %} {{ form }}
+    <input type="submit" value="Add wave" />
+</form>
+
+<button>
+    <a href="{% url "echos:echo-detail" echo %}">Cancel</a>
+</button>

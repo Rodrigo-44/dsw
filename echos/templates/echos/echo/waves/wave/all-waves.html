@@ -1,0 +1,50 @@
+{% extends "base.html" %} {% block content %}
+<div>
+    <h2>Echo message:</h2>
+    <b>==========================================</b>
+    <p>{{ echo.content }}</p>
+    <b>==========================================</b>
+    <p>Writed by 
+        <a href=" {% url "users:user-detail" echo.user.username %}">
+            <b>{{ echo.user.username|capfirst }}</b>
+        </a>
+    </p>
+    <time>{{ echo.created_at|timesince }} ago</time>
+</div>
+
+<ol>
+    {% for wave in waves %}
+    <li>{{ wave.content }}</li>
+    {% if wave.user == request.user %}
+    <button>
+        <a href="{% url "waves:wave-edit" wave.pk %}">Edit wave</a>
+    </button>
+    <button>
+        <a href="{% url "waves:wave-delete" wave.pk %}">Delete wave</a>
+    </button>
+    {% endif %}
+
+    <ul>
+        <li>Writed by 
+            <a href=" {% url "users:user-detail" wave.user.username %}">
+                <b>{{ wave.user.username|capfirst }}</b>
+            </a>
+        </li>
+    </ul>
+    <br>
+
+    {% empty %}
+    <p>No waves yet.</p>
+    {% endfor %}
+</ol>
+
+<div>
+    <button>
+        <a href="{% url 'echos:echo-wave-add' echo %}">Add wave</a></button>
+    {% if echo.user == request.user %}
+        <button>
+            <a href="{% url "echos:echo-edit" echo%}">Edit echo</a>
+        </button>
+    {% endif %}
+</div>
+{% endblock content %}
