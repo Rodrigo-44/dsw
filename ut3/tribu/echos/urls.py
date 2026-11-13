@@ -6,12 +6,11 @@ app_name = 'echos'
 register_converter(converters.EchoConverter, 'echo')
 
 urlpatterns = [
-    path('', views.echo_list, name='echos-list'),
-    # path('add/', views.add_post, name='add-post'),
-    # path(
-    #    '<post:post>/', views.post_detail, name='post-detail'
-    # ),  # el pirmero es el conversor el segundo es el parametro de la vista
-    # path('<post:post>/edit/', views.edit_post, name='edit-post'),
-    # path('<post:post>/delete/', views.delete_post, name='delete-post'),
-    # path('<post:post>/comments/add', views.add_comment, name='add-comments'),
+    path('', views.echo_list, name='echo-list'),
+    path('add/', views.add_echo, name='echo-add'),
+    path('<echo:echo>/', views.echo_detail, name='echo-detail'),
+    path('<echo:echo>/waves/', views.echo_waves, name='echo-wave'),
+    path('<echo:echo>/edit/', views.edit_echo, name='echo-edit'),
+    path('<echo:echo>/delete/', views.delete_echo, name='echo-delete'),
+    path('<echo:echo>/waves/add/', views.add_wave, name='echo-wave-add'),
 ]

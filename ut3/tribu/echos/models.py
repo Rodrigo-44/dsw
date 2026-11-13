@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 
 class Echo(models.Model):
@@ -9,3 +10,9 @@ class Echo(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='echos', on_delete=models.CASCADE
     )
+
+    def get_absolute_url(self):
+        return reverse('echos:echo-detail', args=[self.pk])
+
+    def __str__(self):
+        return f'Echo {self.pk} by {self.user} ({self.created_at:%Y-%m-%d})'

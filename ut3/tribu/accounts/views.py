@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
+from users.models import Profile
 
 from .forms import LoginForm, SignupForm
 
@@ -20,7 +21,7 @@ def user_login(request):
 
     else:
         form = LoginForm()
-    return render(request, 'accounts/login.html', {'form': form})
+    return render(request, 'login.html', {'form': form})
 
 
 def user_logout(request):
@@ -38,12 +39,13 @@ def user_signup(request):
     if request.method == 'POST':
         if (form := SignupForm(request.POST)).is_valid():
             user = form.save()
+            Profile.objects.create(user=user)
             login(request, user)
             return redirect(FALLBACK_REDIRECT)
     else:
         form = SignupForm()
     return render(
         request,
-        'accounts/signup.html',
+        'signup.html',
         {'form': form},
     )

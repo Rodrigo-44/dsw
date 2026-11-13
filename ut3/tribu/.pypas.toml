@@ -1,4 +1,4 @@
-version = "0.1.10"
+version = "0.1.11"
 slug = "tribu"
 bundle = [ "/docs/README.pdf", "/tests", "/fixtures", "/factories", "/media/avatars/example*.jpg", "/media/avatars/noavatar.png", "/.gitignore", "/pyproject.toml", "/uv.lock", "/justfile", "/pytest.ini",]
 backup_on_update = [ "justfile",]
@@ -18,3 +18,4 @@ test_cmd = "uv run pytest"
 "0.1.8" = "Añade comprobación de migraciones antes de test-core"
 "0.1.9" = "Corrige enlaces aprendepython.es"
 "0.1.10" = "Arregla error de comprobación de migraciones en receta load-data"
+"0.1.11" = "Arregla errata enunciado en vistas de users"
