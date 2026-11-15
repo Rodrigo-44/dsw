@@ -1,0 +1,16 @@
+<div class="profile-info">
+  <img
+    src="{{ profile.avatar.url }}"
+    alt="Avatar de {{ profile.user.username }}"
+  />
+
+  <h2>{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
+
+  <p>Username: {{ profile.user.username }}</p>
+  <p>Email: {{ profile.user.email }}</p>
+  <p>Bio: {{ profile.bio }}</p>
+
+  {% if request.user.username == profile.user.username %}
+  <a href="{% url 'users:user-edit' profile.user.username %}"> Edit profile </a>
+  {% endif %}
+</div>

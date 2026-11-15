@@ -11,6 +11,5 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
     )
 
-
-def __str__(self):
-    return self.user.username
+    def __str__(self):
+        return self.user.username

@@ -1,38 +1,41 @@
-{% extends "base.html" %} {% block content %}
-<!-- prettier-ignore -->
-{% if echo %}
-<h3>Tribu has posted {{ total_echos }} echo{{ echo|length|pluralize }} so far!</h3>
+{% extends "base.html" %} {% block content %} {% if echo %}
+<h3>
+  Tribu has posted {{ total_echos }} echo{{ echo|length|pluralize }} so far!
+</h3>
+
 <button>
-    <a href="{% url 'echos:echo-add' %}">Add echo</a>
+  <a href="{% url 'echos:echo-add' %}">Add echo</a>
 </button>
+
 <ol>
-    {% for echo in echo %}
+  {% for echo in echo %}
+  <li>
+    <p>{{ echo.content|truncatewords:20 }}</p>
 
-    <li>
-        <p>{{ echo.content|truncatewords:20 }}</p>
+    <ul>
+      <li>
+        <p>
+          Written by:
+          <a href="{% url 'users:user-detail' echo.user.username %}">
+            <b>{{ echo.user.username|capfirst }}</b>
+          </a>
+        </p>
+      </li>
 
-        <ul>
-            <li>
-                <p>
-                    Writed by:
-                    <a href="{% url 'users:user-detail' echo.user %}">
-                        <b>{{ echo.user.username|capfirst }}</b>
-                    </a>
-                </p>
-            </li>
-            <li><a href="{% url 'echos:echo-detail' echo %}">Ver echo</a></li>
-            <br />
-            <li><time>{{ echo.created_at|timesince }} ago</time><br /></li>
-            <separator>________________</separator
-            ><br />
-        </ul>
-        {% endfor %}
-    </li>
+      <li>
+        <a href="{% url 'echos:echo-detail' echo %}">View echo</a>
+      </li>
+
+      <li><time>{{ echo.created_at|timesince }}</time> ago</li>
+    </ul>
+  </li>
+  {% endfor %}
 </ol>
 
 {% else %}
 <p>No echos yet.</p>
+
 <button>
-    <a href="{% url 'echos:echo-add' %}">Add echo</a>
+  <a href="{% url 'echos:echo-add' %}">Add echo</a>
 </button>
 {% endif %} {% endblock content %}
