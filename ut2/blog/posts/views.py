@@ -56,5 +56,6 @@ def edit_post(request, post:Post):
     if request._
 
 def delete_post(request, post: Post):
-    post.delete()  # Pones esto pq el conversor que acabamos de crear ya lo buscamo y si no devuelve un error 404
+    post.delete() # Pones esto pq el conversor que acabamos de crear ya lo buscamo y si no devuelve un error 404
+    messages.success(request, 'Post deleted successfully')
     return redirect('posts:post-list')

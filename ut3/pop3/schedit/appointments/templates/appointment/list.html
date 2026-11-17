@@ -1,0 +1,9 @@
+{% block content %}
+<ul>
+    {% for appointment in appointments %}
+        <li>{{ appointment }}</li>
+    {% empty %}
+        <p>No posts so far!</p>
+    {% endfor %}
+</ul>
+{% endblock %}
