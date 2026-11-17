@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block content %}
+<p>Created by {{ authhor }}</p>
+{% for post in posts %}
+<h3>{{ post }}</h3>
+<p>Category: {{ post.get_category_display }}</p>
+<div class="rating" style="background-color: {{ post.rating_color }}">
+  {{ post.get_rating_display }}
+</div>
+<p>Rating: {{ post.get_rating_display }}</p>
+<p>Read more <a href="{{ post.get_absolute_url  }}">here</a></p>
+{% endfor %} {% endblock %}

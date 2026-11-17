@@ -1,0 +1,28 @@
+{% block  content %}
+<h2>{{ post.title.upper }}</h2>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+
+
+            {{ message }}
+        </li>
+    {% endfor %}
+</ul>
+{% endif %}
+<a href="{% url 'posts:delete-post' post %}">Delete post</a>
+<img src="{{ post.cover.url }}">
+<p>{{ post.content }}</p>
+<h3>Comments</h3>
+{% for comment in post.comments.all %}
+<p>{{comment }}</p>
+{% endfor %}
+<hr>
+<form method="post" action="{% url 'posts:add-comment' post %}">
+{% csrf_token %}
+{{ comment_form }}
+<input type="submit" value="Enviar">
+</form>
+{% endblock  content %}%}
+
