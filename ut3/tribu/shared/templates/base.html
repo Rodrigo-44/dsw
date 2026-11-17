@@ -1,16 +1,13 @@
 {% load static %}
 
 <!doctype html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% if title %}{{ title }} | {% endif %}Tribu</title>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
   </head>
-
   <body>
-    {% include "header.html" %}
-    <div class="container">{% block content %}{% endblock %}</div>
+    {% include "header.html" %} {% include "messages.html" %}
+
+    <main class="container">{% block content %}{% endblock %}</main>
   </body>
 </html>

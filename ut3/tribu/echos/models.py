@@ -11,6 +11,9 @@ class Echo(models.Model):
         settings.AUTH_USER_MODEL, related_name='echos', on_delete=models.CASCADE
     )
 
+    class Meta:
+        ordering = ['-created_at']
+
     def get_absolute_url(self):
         return reverse('echos:echo-detail', args=[self.pk])
 

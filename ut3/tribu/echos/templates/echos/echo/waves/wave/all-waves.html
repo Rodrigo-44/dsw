@@ -1,50 +1,49 @@
 {% extends "base.html" %} {% block content %}
-<div>
-    <h2>Echo message:</h2>
-    <b>==========================================</b>
-    <p>{{ echo.content }}</p>
-    <b>==========================================</b>
-    <p>Writed by 
-        <a href=" {% url "users:user-detail" echo.user.username %}">
-            <b>{{ echo.user.username|capfirst }}</b>
-        </a>
-    </p>
-    <time>{{ echo.created_at|timesince }} ago</time>
-</div>
 
-<ol>
-    {% for wave in waves %}
-    <li>{{ wave.content }}</li>
-    {% if wave.user == request.user %}
-    <button>
-        <a href="{% url "waves:wave-edit" wave.pk %}">Edit wave</a>
-    </button>
-    <button>
-        <a href="{% url "waves:wave-delete" wave.pk %}">Delete wave</a>
-    </button>
-    {% endif %}
-
-    <ul>
-        <li>Writed by 
-            <a href=" {% url "users:user-detail" wave.user.username %}">
-                <b>{{ wave.user.username|capfirst }}</b>
-            </a>
-        </li>
-    </ul>
-    <br>
-
-    {% empty %}
-    <p>No waves yet.</p>
-    {% endfor %}
-</ol>
+<h2>Echo</h2>
 
 <div>
-    <button>
-        <a href="{% url 'echos:echo-wave-add' echo %}">Add wave</a></button>
-    {% if echo.user == request.user %}
-        <button>
-            <a href="{% url "echos:echo-edit" echo%}">Edit echo</a>
-        </button>
-    {% endif %}
+  <p>{{ echo.content }}</p>
+
+  <p>
+    Written by
+    <a href="{% url 'users:user-detail' echo.user.username %}">
+      {{ echo.user.username }}
+    </a>
+    -
+    <time>{{ echo.created_at|timesince }}</time> ago
+  </p>
+
+  {% if request.user == echo.user %}
+  <a href="{% url 'echos:echo-edit' echo.pk %}">Edit echo</a>
+  <a href="{% url 'echos:echo-delete' echo.pk %}">Delete echo</a>
+  {% endif %}
 </div>
+
+<h3>All waves</h3>
+
+{% for wave in waves %}
+<div>
+  <p>{{ wave.content }}</p>
+
+  <p>
+    Written by
+    <a href="{% url 'users:user-detail' wave.user.username %}">
+      {{ wave.user.username }}
+    </a>
+    -
+    <time>{{ wave.created_at|timesince }}</time> ago
+  </p>
+
+  {% if request.user == wave.user %}
+  <a href="{% url 'waves:wave-edit' wave.pk %}">Edit wave</a>
+  <a href="{% url 'waves:wave-delete' wave.pk %}">Delete wave</a>
+  {% endif %}
+</div>
+{% empty %}
+<p>No waves yet</p>
+{% endfor %}
+
+<a href="{{ echo.get_absolute_url }}">Back to echo</a>
+
 {% endblock content %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %} {% block content %}
+
+<h2>Edit profile</h2>
+
+<form method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %} {{ form.as_p }}
+
+  <button type="submit">Save changes</button>
+  <a href="{% url 'users:me' %}">Cancel</a>
+</form>
+
+{% endblock content %}

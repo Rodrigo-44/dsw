@@ -1,9 +1,17 @@
-{% extends "base.html" %} {% block content %} {% for user in users %}
+{% extends "base.html" %} {% block content %}
+
+<h2>Users</h2>
+
 <ul>
+  {% for profile in profiles %}
   <li>
-    <a href="{% url 'users:user-detail' user.user %}">{{ user.user }}</a>
+    <a href="{% url 'users:user-detail' profile.user.username %}">
+      {{ profile.user.username }}
+    </a>
   </li>
+  {% empty %}
+  <li>No users yet.</li>
+  {% endfor %}
 </ul>
-{% empty %}
-<p>No users yet.</p>
-{% endfor %} {% endblock content %}
+
+{% endblock content %}

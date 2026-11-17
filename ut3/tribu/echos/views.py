@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 
 from waves.forms import AddWaveForm
 
@@ -22,15 +22,15 @@ def echo_list(request):
 
 @login_required
 def add_echo(request):
-
     if request.method == 'POST':
         form = AddEchoForm(request.POST)
+
         if form.is_valid():
             echo = form.save(commit=False)
             echo.user = request.user
             echo.save()
 
-            messages.success(request, 'Echo added successfully.')
+            messages.success(request, 'Echo added successfully')
             return redirect(echo)
     else:
         form = AddEchoForm()
@@ -67,18 +67,9 @@ def delete_echo(request, echo):
     # Comprobar si el usuario logueado es el autor (si no, devuelve un error 403)
     if echo.user != request.user:
         raise PermissionDenied('No eres el autor de este echo.')
-
-    if request.method == 'POST':
-        echo.delete()
-        messages.success(request, 'Echo deleted successfully.')
-        return redirect('echos:echo-list')
-
-
-"""
-=============================
-MANEJO DE DETALLES Y WAVES
-=============================
-"""
+    echo.delete()
+    messages.success(request, 'Echo deleted successfully.')
+    return redirect('echos:echo-list')
 
 
 @login_required
@@ -112,18 +103,21 @@ def echo_waves(request, echo):
 @login_required
 def add_wave(request, echo):
     if request.method == 'POST':
-        form = AddWaveForm(
-            request.POST,
-        )
+        form = AddWaveForm(request.POST)
+
         if form.is_valid():
             wave = form.save(commit=False)
             wave.user = request.user
-            wave.echo = echo  # Guarda el id del echo para saber a cuál pertenece.
+            wave.echo = echo
             wave.save()
+
             messages.success(request, 'Wave added successfully')
-            return redirect(echo)  # Método get_absolute_url()
+            return redirect(echo)
     else:
-        # Petición GET, mostramos formulario vacío
         form = AddWaveForm()
 
-    return render(request, 'echos/echo/waves/wave/add.html', {'form': form, 'echo': echo})
+    return render(
+        request,
+        'echos/echo/waves/wave/add.html',
+        {'form': form, 'echo': echo},
+    )
