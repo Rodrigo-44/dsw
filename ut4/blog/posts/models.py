@@ -1,6 +1,10 @@
+from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+
+from .validators import cacharacter_post, validate_title
 
 
 class PostLabelingDetail(models.Model):
@@ -19,6 +23,8 @@ class PostLabelingDetail(models.Model):
 
 
 class Post(models.Model):
+    DEFAULT_RANK = 3
+
     class Category(models.TextChoices):
         SOCIETY = 'SOC', 'Society'
         EDUCATION = 'EDU', 'Education'
@@ -33,9 +39,9 @@ class Post(models.Model):
         GOOD = 4
         EXCELLENT = 5
 
-    title = models.CharField(max_length=256)
-    slug = models.SlugField(max_length=256, unique=True, editable=False)
-    content = models.TextField()
+    title = models.CharField(max_length=256, validators=[validate_title])
+    slug = models.SlugField(max_length=256, unique=True)
+    content = models.TextField(validators=[cacharacter_post])
     published = models.BooleanField(default=False)
     cover = models.ImageField(
         upload_to='covers',
@@ -56,12 +62,14 @@ class Post(models.Model):
         through='posts.PostLabelingDetail',
         blank=True,
     )
+    rank = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        default=DEFAULT_RANK,
+    )
 
     # -created_ad
     class Meta:
         ordering = ['title']
-
-    class Meta:
         unique_together = ['title', 'slug']
 
     def save(self, *args, **kwargs):
@@ -98,3 +106,10 @@ class Post(models.Model):
             case _:
                 color = NO_RATING_COLOR
         return f'#{color}'
+
+    def clean(self):
+        if self.slug != slugify(self.title):
+            raise ValidationError("Slug does not match with title's slugify")
+    
+    def content_label(self):
+        
